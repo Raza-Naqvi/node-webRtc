@@ -55,6 +55,11 @@ io.on("connection", function (socket) {
         socket.broadcast.to(roomName).emit("candidate", candidate);
     });
 
+    socket.on("offer", function (offer, roomName) {
+        console.log("offer", offer);
+        socket.broadcast.to(roomName).emit("offer", offer);
+    });
+
     socket.on("answer", function (answer, roomName) {
         console.log("answer", answer);
         socket.broadcast.to(roomName).emit("answer", answer);
