@@ -74,6 +74,7 @@ socket.on("ready", function () {
     if (creator) {
         rtcPeerConnection = new RTCPeerConnection(iceServers);
         rtcPeerConnection.onicecandidate = OnIceCandidateFunction;
+        rtcPeerConnection.ontrack = OnTrackFunction;
     };
 });
 
@@ -84,5 +85,12 @@ socket.on("answer", function () { });
 function OnIceCandidateFunction(event) {
     if (event.candidate) {
         socket.emit("candidate", event.candidate, roomName);
+    };
+};
+
+function OnTrackFunction(event) {
+    peerVideo.srcObject = event.streams[0];
+    peerVideo.onloadedmetadata = function (e) {
+        peerVideo.play();;
     };
 };
