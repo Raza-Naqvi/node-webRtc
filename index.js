@@ -32,17 +32,31 @@ io.on("connection", function (socket) {
 
     socket.on("join", function (roomName) {
         var rooms = io.sockets.adapter.rooms;
-        console.log("rooms", rooms);
         var room = rooms.get(roomName);
         if (room == undefined) {
             socket.join(roomName);
-            console.log("Room created");
+            socket.emit("created");
         } else if (room.size == 1) {
             socket.join(roomName);
-            console.log("Room join");
+            socket.emit("joined");
         } else {
-            console.log("Room is full");
+            socket.emit("full");
         };
-        console.log("room", room);
+    });
+
+    //steps of creating a signaling server
+    socket.on("ready", function (roomName) {
+        console.log("ready", roomName);
+        socket.broadcast.to(roomName).emit("ready");
+    });
+
+    socket.on("candidate", function (candidate, roomName) {
+        console.log("candidate", candidate);
+        socket.broadcast.to(roomName).emit("candidate", candidate);
+    });
+
+    socket.on("answer", function (answer, roomName) {
+        console.log("answer", answer);
+        socket.broadcast.to(roomName).emit("answer", answer);
     });
 });
