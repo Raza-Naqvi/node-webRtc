@@ -80,6 +80,14 @@ socket.on("ready", function () {
         rtcPeerConnection.ontrack = OnTrackFunction;
         rtcPeerConnection.addTrack(userStream.getTracks()[0], userStream);  //for audio stream
         rtcPeerConnection.addTrack(userStream.getTracks()[1], userStream);  //for video stream
+        rtcPeerConnection.createOffer(
+            function (offer) {
+                socket.emit('offer', offer, roomName);
+            },
+            function (err) {
+                console.log("Creating offer err", err);
+            }
+        );
     };
 });
 
