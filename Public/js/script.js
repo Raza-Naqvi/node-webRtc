@@ -7,6 +7,13 @@ var userVideo = document.getElementById("user-video");
 var peerVideo = document.getElementById("peer-video");
 var roomName = roomInput.value;
 var creator;
+var rtcPeerConnection;
+
+var iceServers = {
+    iceServers: [
+        { urls: "stun1.l.google.com:19302", }
+    ],
+};
 
 navigator.getUserMedia = navigator.getUserMedia;
 
@@ -51,6 +58,7 @@ socket.on("joined", function () {
             userVideo.onloadedmetadata = function (e) {
                 userVideo.play();;
             };
+            socket.emit("ready", roomName);
         },
         function (err) {
             alert("something went wrong");
@@ -62,7 +70,19 @@ socket.on("full", function () {
     alert("Room full");
 });
 
-socket.on("ready", function () { });
+socket.on("ready", function () {
+    if (creator) {
+        rtcPeerConnection = new RTCPeerConnection(iceServers);
+        rtcPeerConnection.onicecandidate = OnIceCandidateFunction;
+    };
+});
+
 socket.on("candidate", function () { });
 socket.on("offer", function () { });
 socket.on("answer", function () { });
+
+function OnIceCandidateFunction(event) {
+    if (event.candidate) {
+        socket.emit("candidate", event.candidate, roomName);
+    };
+};
