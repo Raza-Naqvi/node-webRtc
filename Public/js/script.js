@@ -8,6 +8,7 @@ var peerVideo = document.getElementById("peer-video");
 
 joinBtn.addEventListener("click", function () {
     if (roomName.value != '') {
+        socket.emit("join", roomName.value);
         navigator.getUserMedia = navigator.getUserMedia;
         navigator.getUserMedia(
             {
