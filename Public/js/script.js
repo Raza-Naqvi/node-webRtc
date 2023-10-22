@@ -8,6 +8,7 @@ var peerVideo = document.getElementById("peer-video");
 var roomName = roomInput.value;
 var creator;
 var rtcPeerConnection;
+var userStream;
 
 var iceServers = {
     iceServers: [
@@ -33,6 +34,7 @@ socket.on("created", function () {
             video: { width: 1280, height: 720 }
         },
         function (stream) {
+            userStream = stream;
             videoChatForm.style = "display:none";
             userVideo.srcObject = stream;
             userVideo.onloadedmetadata = function (e) {
@@ -53,6 +55,7 @@ socket.on("joined", function () {
             video: { width: 1280, height: 720 }
         },
         function (stream) {
+            userStream = stream;
             videoChatForm.style = "display:none";
             userVideo.srcObject = stream;
             userVideo.onloadedmetadata = function (e) {
@@ -75,6 +78,8 @@ socket.on("ready", function () {
         rtcPeerConnection = new RTCPeerConnection(iceServers);
         rtcPeerConnection.onicecandidate = OnIceCandidateFunction;
         rtcPeerConnection.ontrack = OnTrackFunction;
+        rtcPeerConnection.addTrack(userStream.getTracks()[0], userStream);  //for audio stream
+        rtcPeerConnection.addTrack(userStream.getTracks()[1], userStream);  //for video stream
     };
 });
 
