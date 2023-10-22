@@ -44,7 +44,7 @@ io.on("connection", function (socket) {
         };
     });
 
-    //steps of creating a signaling server
+    //4 steps of creating a signaling server
     socket.on("ready", function (roomName) {
         console.log("ready", roomName);
         socket.broadcast.to(roomName).emit("ready");
