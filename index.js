@@ -56,7 +56,7 @@ io.on("connection", function (socket) {
     });
 
     socket.on("offer", function (offer, roomName) {
-        console.log("offer", offer);
+        console.log("offer");
         socket.broadcast.to(roomName).emit("offer", offer);
     });
 
