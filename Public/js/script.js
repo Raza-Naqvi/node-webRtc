@@ -82,6 +82,7 @@ socket.on("ready", function () {
         rtcPeerConnection.addTrack(userStream.getTracks()[1], userStream);  //for video stream
         rtcPeerConnection.createOffer(
             function (offer) {
+                rtcPeerConnection.setLocalDescription(offer);
                 socket.emit('offer', offer, roomName);
             },
             function (err) {
@@ -92,8 +93,30 @@ socket.on("ready", function () {
 });
 
 socket.on("candidate", function () { });
-socket.on("offer", function () { });
-socket.on("answer", function () { });
+
+socket.on("offer", function (offer) {
+    if (!creator) {
+        rtcPeerConnection = new RTCPeerConnection(iceServers);
+        rtcPeerConnection.onicecandidate = OnIceCandidateFunction;
+        rtcPeerConnection.ontrack = OnTrackFunction;
+        rtcPeerConnection.addTrack(userStream.getTracks()[0], userStream);  //for audio stream
+        rtcPeerConnection.addTrack(userStream.getTracks()[1], userStream);  //for video stream
+        rtcPeerConnection.setRemoteDescription(offer)
+        rtcPeerConnection.createAnswer(
+            function (answer) {
+                rtcPeerConnection.setLocalDescription(answer);
+                socket.emit('answer', answer, roomName);
+            },
+            function (err) {
+                console.log("Creating answer err", err);
+            }
+        );
+    };
+});
+
+socket.on("answer", function (answer) {
+    rtcPeerConnection.setRemoteDescription(answer);
+});
 
 function OnIceCandidateFunction(event) {
     if (event.candidate) {
