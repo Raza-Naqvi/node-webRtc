@@ -92,7 +92,10 @@ socket.on("ready", function () {
     };
 });
 
-socket.on("candidate", function () { });
+socket.on("candidate", function (candidate) {
+    var iceCandidate = new RTCIceCandidate(candidate);
+    rtcPeerConnection.addIceCandidate(iceCandidate);
+});
 
 socket.on("offer", function (offer) {
     if (!creator) {
