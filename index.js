@@ -64,4 +64,10 @@ io.on("connection", function (socket) {
         console.log("answer");
         socket.broadcast.to(roomName).emit("answer", answer);
     });
+
+    //leave room
+    socket.on("leave", function (roomName) {
+        socket.leave(roomName);
+        socket.broadcast.to(roomName).emit("leave");
+    });
 });

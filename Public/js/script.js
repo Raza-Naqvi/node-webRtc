@@ -8,6 +8,7 @@ var peerVideo = document.getElementById("peer-video");
 var divBtnGroup = document.getElementById("btn-group");
 var muteButton = document.getElementById("muteButton");
 var hideCameraBtn = document.getElementById("hideButton");
+var leaveRoomButton = document.getElementById("leaveRoomButton");
 var roomName = roomInput.value;
 var muteFlag = false;
 var hideCameraFlag = false;
@@ -148,6 +149,39 @@ socket.on("offer", function (offer) {
 
 socket.on("answer", function (answer) {
     rtcPeerConnection.setRemoteDescription(answer);
+});
+
+//leave room
+leaveRoomButton.addEventListener("click", function () {
+    socket.emit("leave", roomName);
+    videoChatForm.style = "display:block";
+    divBtnGroup.style = "display:none";
+    if (userVideo.srcObject) {
+        userVideo.srcObject.getTracks()[0].stop();
+        userVideo.srcObject.getTracks()[1].stop();
+    } else if (peerVideo.srcObject) {
+        peerVideo.srcObject.getTracks()[0].stop();
+        peerVideo.srcObject.getTracks()[1].stop();
+    };
+    if (rtcPeerConnection) {
+        rtcPeerConnection.ontrack = null;
+        rtcPeerConnection.iceCandidate = null
+        rtcPeerConnection.close();
+    };
+});
+
+socket.on("leave", function () {
+    creator = true;
+    if (peerVideo.srcObject) {
+        peerVideo.srcObject.getTracks()[0].stop();
+        peerVideo.srcObject.getTracks()[1].stop();
+    };
+    if (rtcPeerConnection) {
+        rtcPeerConnection.ontrack = null;
+        rtcPeerConnection.iceCandidate = null
+        rtcPeerConnection.close();
+    };
+
 });
 
 function OnIceCandidateFunction(event) {
