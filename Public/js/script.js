@@ -7,8 +7,10 @@ var userVideo = document.getElementById("user-video");
 var peerVideo = document.getElementById("peer-video");
 var divBtnGroup = document.getElementById("btn-group");
 var muteButton = document.getElementById("muteButton");
+var hideCameraBtn = document.getElementById("hideButton");
 var roomName = roomInput.value;
 var muteFlag = false;
+var hideCameraFlag = false;
 var creator;
 var rtcPeerConnection;
 var userStream;
@@ -37,6 +39,17 @@ muteButton.addEventListener("click", function () {
     } else {
         userStream.getTracks()[0].enabled = true;
         muteButton.textContent = "Mute"
+    };
+});
+
+hideCameraBtn.addEventListener("click", function () {
+    hideCameraFlag = !hideCameraFlag;
+    if (hideCameraFlag) {
+        hideCameraBtn.textContent = "Show Camera";
+        userStream.getTracks()[1].enabled = false;
+    } else {
+        userStream.getTracks()[1].enabled = true;
+        hideCameraBtn.textContent = "Hide Camera"
     };
 });
 
