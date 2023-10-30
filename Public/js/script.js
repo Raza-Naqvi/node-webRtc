@@ -5,7 +5,10 @@ var joinBtn = document.getElementById("join");
 var roomInput = document.getElementById("roomName");
 var userVideo = document.getElementById("user-video");
 var peerVideo = document.getElementById("peer-video");
+var divBtnGroup = document.getElementById("btn-group");
+var muteButton = document.getElementById("muteButton");
 var roomName = roomInput.value;
+var muteFlag = false;
 var creator;
 var rtcPeerConnection;
 var userStream;
@@ -26,16 +29,28 @@ joinBtn.addEventListener("click", function () {
     };
 });
 
+muteButton.addEventListener("click", function () {
+    muteFlag = !muteFlag;
+    if (muteFlag) {
+        muteButton.textContent = "Unmute";
+        userStream.getTracks()[0].enabled = false;
+    } else {
+        userStream.getTracks()[0].enabled = true;
+        muteButton.textContent = "Mute"
+    };
+});
+
 socket.on("created", function () {
     creator = true;
     navigator.getUserMedia(
         {
             audio: true,
-            video: { width: 1280, height: 720 }
+            video: { width: 500, height: 500 }
         },
         function (stream) {
             userStream = stream;
             videoChatForm.style = "display:none";
+            divBtnGroup.style = "display:flex";
             userVideo.srcObject = stream;
             userVideo.onloadedmetadata = function (e) {
                 userVideo.play();;
@@ -52,11 +67,12 @@ socket.on("joined", function () {
     navigator.getUserMedia(
         {
             audio: true,
-            video: { width: 1280, height: 720 }
+            video: { width: 500, height: 500 }
         },
         function (stream) {
             userStream = stream;
             videoChatForm.style = "display:none";
+            divBtnGroup.style = "display:flex";
             userVideo.srcObject = stream;
             userVideo.onloadedmetadata = function (e) {
                 userVideo.play();;

@@ -46,12 +46,12 @@ io.on("connection", function (socket) {
 
     //4 steps of creating a signaling server
     socket.on("ready", function (roomName) {
-        console.log("ready", roomName);
+        console.log("ready");
         socket.broadcast.to(roomName).emit("ready");
     });
 
     socket.on("candidate", function (candidate, roomName) {
-        console.log("candidate", candidate);
+        console.log("candidate");
         socket.broadcast.to(roomName).emit("candidate", candidate);
     });
 
@@ -61,7 +61,7 @@ io.on("connection", function (socket) {
     });
 
     socket.on("answer", function (answer, roomName) {
-        console.log("answer", answer);
+        console.log("answer");
         socket.broadcast.to(roomName).emit("answer", answer);
     });
 });
