@@ -9,7 +9,7 @@ var divBtnGroup = document.getElementById("btn-group");
 var muteButton = document.getElementById("muteButton");
 var hideCameraBtn = document.getElementById("hideButton");
 var leaveRoomButton = document.getElementById("leaveRoomButton");
-var roomName = roomInput.value;
+var roomName;
 var muteFlag = false;
 var hideCameraFlag = false;
 var creator;
@@ -26,6 +26,7 @@ navigator.getUserMedia = navigator.getUserMedia;
 
 joinBtn.addEventListener("click", function () {
     if (roomInput.value != '') {
+        roomName = roomInput.value
         socket.emit("join", roomName);
     } else {
         alert("Please add room Id");
