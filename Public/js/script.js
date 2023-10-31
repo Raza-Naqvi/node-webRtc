@@ -22,7 +22,7 @@ var iceServers = {
     ],
 };
 
-navigator.getUserMedia = navigator.getUserMedia;
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
 joinBtn.addEventListener("click", function () {
     if (roomInput.value != '') {
