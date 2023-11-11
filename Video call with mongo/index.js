@@ -36,3 +36,19 @@ app.use('/', userRoute);
 var wss = new webSocketServ({
     port: 8000
 });
+
+wss.on("connection", function (conn) {
+    console.log("User connected");
+
+    conn.on("message", function () {
+
+    });
+
+    conn.on("close", function () {
+        console.log("Connection closed");
+    });
+});
+
+function sendToOtherUser(connection, message) {
+    connection.send(JSON.stringify(message));
+};
