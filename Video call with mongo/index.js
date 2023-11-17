@@ -66,6 +66,16 @@ wss.on("connection", function (conn) {
                     });
                 };
                 break;
+            case "answer":
+                var connect = users[data.name];
+                if (connect != null) {
+                    conn.otherUser = data.name;
+                    sendToOtherUser(connect, {
+                        type: "answer",
+                        answer: data.answer,
+                    });
+                };
+                break;
         };
     });
 

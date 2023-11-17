@@ -37,6 +37,12 @@ connection.onmessage = function (msg) {
         case "online":
             onlineProcess(data.success);
             break;
+        case "offer":
+            offerProcess(data.offer, data.name);
+            break;
+        case "answer":
+            answerProcess(data.answer);
+            break;
     };
 };
 
@@ -92,4 +98,25 @@ function onlineProcess(success) {
     } else {
         alert("something went wrong");
     };
+};
+
+function offerProcess(offer, name) {
+    connectedUser = name;
+    console.log("offerProcess remote user ==>", connectedUser);
+    myConn.setRemoteDescription(new RTCSessionDescription(offer));
+    //creating answer from remote user
+    myConn.createAnswer(
+        function (answer) {
+            myConn.setLocalDescription(answer);
+            send({ type: "answer", answer: answer });
+        },
+        function (err) {
+            alert("answer creation error");
+            console.log("answer err", err);
+        },
+    );
+};
+
+function answerProcess(answer) {
+    myConn.setRemoteDescription(new RTCSessionDescription(answer));
 };
