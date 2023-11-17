@@ -1,4 +1,8 @@
 <%- include('layouts/header.ejs') %>
+    <script>
+        var username = null;
+        username = "<%= user.name %>".toLowerCase();
+    </script>
     <a class="btn" style="float: right;" href="/logout">Logout</a>
 
     <div class="main-wrap">

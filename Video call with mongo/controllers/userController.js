@@ -60,7 +60,7 @@ const register = async (req, res) => {
 
 const loadHome = async (req, res) => {
     try {
-        res.render('home');
+        res.render('home', { user: req.session.user });
     } catch (error) {
         console.log("loadHome error", error.message);
     };
