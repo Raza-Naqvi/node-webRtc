@@ -11,7 +11,17 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 call_btn.addEventListener("click", function () {
     var call_to_username = call_to_username_input.value;
     if (call_to_username.length > 0) {
-        connectedUser = call_to_username;
+        connectedUser = call_to_username.toLowerCase();
+        myConn.createOffer(
+            function (offer) {
+                send({ type: "offer", offer: offer });
+                myConn.setLocalDescription(offer);
+            },
+            function (error) {
+                alert("something went wrong!");
+                console.log("click err", error);
+            },
+        );
     } else {
         alert("Enter a name to call");
     };
@@ -48,7 +58,7 @@ setTimeout(() => {
 
 function send(message) {
     if (connectedUser) {
-        message.name = connected;
+        message.name = connectedUser;
     };
     connection.send(JSON.stringify(message));
 };
