@@ -59,21 +59,20 @@ wss.on("connection", function (conn) {
                 var connect = users[data.name];
                 if (connect != null) {
                     conn.otherUser = data.name;
-                    sendToOtherUser(connect, {
-                        type: "offer",
-                        offer: data.offer,
-                        name: conn.name
-                    });
+                    sendToOtherUser(connect, { type: "offer", offer: data.offer, name: conn.name });
                 };
                 break;
             case "answer":
                 var connect = users[data.name];
                 if (connect != null) {
                     conn.otherUser = data.name;
-                    sendToOtherUser(connect, {
-                        type: "answer",
-                        answer: data.answer,
-                    });
+                    sendToOtherUser(connect, { type: "answer", answer: data.answer });
+                };
+                break;
+            case "candidate":
+                var connect = users[data.name];
+                if (connect != null) {
+                    sendToOtherUser(connect, { type: "candidate", answer: data.candidate });
                 };
                 break;
         };
