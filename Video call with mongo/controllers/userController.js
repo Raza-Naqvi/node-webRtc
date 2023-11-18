@@ -48,6 +48,7 @@ const register = async (req, res) => {
             const user = new User({
                 name: req.body.name,
                 email: req.body.email,
+                image: "images/" + req.file.filename,
                 password: passwordHash
             });
             await user.save();

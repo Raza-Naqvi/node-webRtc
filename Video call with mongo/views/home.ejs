@@ -1,6 +1,7 @@
 <%- include('layouts/header.ejs') %>
     <script>
         var username = `<%= user?.name %>`.toLowerCase();
+        var userImage = `<%= user?.image %>`;
     </script>
     <a class="btn" style="float: right;" href="/logout">Logout</a>
 

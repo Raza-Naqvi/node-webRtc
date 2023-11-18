@@ -57,7 +57,10 @@ wss.on("connection", function (conn) {
                 var connect = users[data.name];
                 if (connect != null) {
                     conn.otherUser = data.name;
-                    sendToOtherUser(connect, { type: "offer", offer: data.offer, name: conn.name });
+                    sendToOtherUser(connect, { type: "offer", offer: data.offer, name: conn.name, image: data.image });
+                } else {
+                    conn.otherUser = data.name;
+                    sendToOtherUser(conn, { type: "not_available", offer: data.offer, name: data.name });
                 };
                 break;
             case "answer":
