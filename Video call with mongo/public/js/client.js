@@ -2,6 +2,7 @@ var connection = new WebSocket("ws://localhost:8000");
 var local_video = document.querySelector('#local-video');
 var call_to_username_input = document.querySelector('#username-input');
 var call_btn = document.querySelector('#call-btn');
+var call_status = document.querySelector('.call-hang-status');
 var name;
 var connectedUser;
 var myConn;
@@ -38,6 +39,7 @@ connection.onmessage = function (msg) {
             onlineProcess(data.success);
             break;
         case "offer":
+            call_status.innerHTML = `<div class="calling-status-wrap card black white-text"> <div class="user-image"> <img src="/images/user.png" class="caller-image circle" alt=""> </div> <div class="user-name">Unknown User</div> <div class="user-calling-status">Calling...</div> <div class="calling-action"> <div class="call-accept"><i class="material-icons green darken-2 white-text audio-icon">call</i></div> <div class="call-reject"><i class="material-icons red darken-3 white-text close-icon">close</i></div> </div> </div>`
             offerProcess(data.offer, data.name);
             break;
         case "answer":
@@ -75,10 +77,7 @@ function send(message) {
 function onlineProcess(success) {
     if (success) {
         navigator.getUserMedia(
-            {
-                audio: true,
-                video: true
-            },
+            { audio: true, video: true },
             function (myStream) {
                 stream = myStream;
                 local_video.srcObject = stream;

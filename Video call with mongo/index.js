@@ -7,9 +7,7 @@ const webSocketServ = require("ws").Server;
 
 const app = express();
 
-const atlasConnectionStr = process.env.MONGODB_ATLAS_CONNECTION_STRING;
-
-mongoose.connect(atlasConnectionStr, {
+mongoose.connect(process.env.MONGODB_ATLAS_CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
